@@ -1,0 +1,73 @@
+body{
+    background-color: rgb(182, 175, 175);
+
+    display: grid;
+    grid-template-areas: "header header header header header"
+                         "nav modelos ano article article"
+                         "footer footer footer footer footer";
+    grid-template-columns: 15% 15% 10% 20% ;
+    grid-template-rows: 20% 60% 15%;
+    grid-gap: 5px;
+
+    height: 100vh;
+
+    
+}
+
+header{
+
+    grid-area: header;
+    border: 2px solid black;
+
+}
+
+.marcas{
+    grid-area: nav;
+    border: 2px solid black;
+    background-color: blue;
+}
+
+
+.modelo{
+    grid-area: modelos;
+    border: 2px solid black;
+    background-color: blue;
+}
+
+.ano{
+    grid-area: ano;
+    border: 2px solid black;
+    background-color: blue;
+}
+
+.marcas, .modelo, .ano p{
+    text-align: center;
+    color: white;
+}
+
+article{
+    grid-area: article;
+    border: 2px solid black;
+}
+
+footer{
+    grid-area: footer;
+    border: 2px solid black;
+}
+
+.container-flex{
+
+    
+
+}
+
+.container-flex div{
+    max-width: 370px;
+}
+
+.container-flex input{
+    
+}
+.container-flex label{
+    
+}
