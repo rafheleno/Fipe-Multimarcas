@@ -3,90 +3,217 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Tabela Fipe</title>
     <link href="index.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Audiowide">
 
 </head>
 
-<body>
+<body onload="busca(0)">
 
     <header>
 
         <h2>Tabela Fipe multimarcas</h2>
 
+        <div class="autor">Rafael Heleno 2024</div>
+
     </header>
+
+
+    <div class="tipo">
+        
+            <input type="radio" id="carros" name="Rtipo" value="carros" checked onclick="busca(0)"><label>Carros</label>
+            <input type="radio" id="motos" name="Rtipo" value="motos" onclick="busca(0)"><label>Motos</label>
+            <input type="radio" id="caminhões" name="Rtipo" value="caminhoes" onclick="busca(0)"><label>Caminhões</label>
+            
+        
+    </div>
 
     <div class="marcas">
 
         <p>Marcas</p>
-    
+
+        <div id="formmarcas" >
+
+        </div>
+
     </div>
 
 
     <div class="modelo">
 
         <p>Modelos</p>
+        <div id="formmodelos">
+
+        </div>
 
     </div>
 
     <div class="ano">
 
-        <p> Ano</p>
-
-    </div>
-
-    <article>
-
-        <p>Ficha do veiculo Veiculo</p>
-
-        <div class="container-flex">
-
-            <form action="">
-                <div>
-                    <label>Tipo de Combustivel</label>
-                    <input type="text" id="TipoVeiculo">
-                </div>
-                <div >
-                    <label>Marca</label>
-                    <input type="text" id="Marca">
-                </div>
-                <div >
-                    <label>Modelo</label>
-                    <input type="text" id="Modelo">
-                </div>
-                <div >Ano e Modelo
-                    <input type="number" id="AnoModelo">
-                </div>
-                <div >Combustivel
-                    <input type="text" id="Combustivel">
-                </div>
-                <div >Código Fipe
-                    <input type="text" id="CodigoFipe">
-                </div>
-                <div >Mes de referencia
-                    <input type="text" id="MesReferencia">
-                </div>
-                <div >Sigla do Combustivel
-                    <input type="text" id="SiglaCombustivel">
-                </div>
-
-
-            </form>
+        <p>Ano</p>
+        <div id="formanos">
 
         </div>
 
-    </article>
+    </div>
 
-    <footer>
 
-        <p>footer</p>
+    <div class="ficha">
 
-    </footer>
+        <p>Ficha do veiculo Veiculo</p>
+
+            <form id="ficha">
+                <div>
+                    <label for="TipoVeiculo">Tipo de Combustivel</label>
+                    <input type="text" id="TipoVeiculo" name="TipoVeiculo" readonly>
+                </div>
+                <div >
+                    <label for="Valor">Valor</label>
+                    <input type="text" id="Valor" name="Valor" readonly>
+                </div>
+                <div >
+                    <label for="Marca">Marca</label>
+                    <input type="text" id="Marca" name="Marca" readonly>
+                </div>
+                <div >
+                    <label for="Modelo">Modelo</label>
+                    <input type="text" id="Modelo" name="Modelo" readonly>
+                </div>
+                <div >
+                    <label for="AnoModelo">Ano</label>
+                    <input type="number" id="AnoModelo" name="AnoModelo" readonly>
+                </div>
+                <div>
+                    <label for="Combustivel">Combustivel</label>
+                    <input type="text" id="Combustivel" name="Combustivel" readonly>
+                </div>
+                <div>
+                    <label for="CodigoFipe">Código Fipe</label>
+                    <input type="text" id="CodigoFipe" name="CodigoFipe" readonly>
+                </div>
+                <div >
+                    <label for="MesReferencia">Mês de referencia</label>
+                    <input type="text" id="MesReferencia" name="MesReferencia" readonly>
+                </div>
+                <div >
+                    <label for="SiglaCombustivel">Sigla do Combustivel</label>
+                    <input type="text" id="SiglaCombustivel" name="SiglaCombustivel" readonly>
+                </div>
+                
+            </form>
+
+    </div>
+
+
 
     <script>
 
 
 
+        async function busca(e){
+
+
+            if(e<=1 ){
+                document.getElementById('formmodelos').innerHTML = "";
+                document.getElementById('formanos').innerHTML = "";
+                document.getElementById('ficha').reset();
+            }
+
+            var tipo = document.querySelector('input[name="Rtipo"]:checked');
+            var marcas=null;
+            var modelos = null;
+            var anos = null;
+
+            if(e>=1)
+                marcas = document.querySelector('input[name="Rmarca"]:checked');
+            if(e>=2){
+                modelos = document.querySelector('input[name="Rmodelos"]:checked');
+            }
+            if(e>=3){
+                anos = document.querySelector('input[name="Rano"]:checked');
+            }
+          
+            if(tipo){
+
+                // selecionando o tipo e buscando a lita de marcas
+                buscar = tipo.value+"/marcas";
+
+                // selecionando a marca e buscando a lista de modelos
+                if (marcas) buscar+= "/"+marcas.value+"/modelos";
+                
+                // selecionando o modelo e buscando a lista de anos
+                if(modelos) buscar+= "/"+modelos.value+"/anos";
+                
+                // selecionando o ano e buscando a ficha do veiculo
+                if(anos) buscar+= "/"+anos.value;
+                
+                /*  Busca */
+
+                const result = await fetch('https://parallelum.com.br/fipe/api/v1/'+buscar);
+                
+                var data = await result.json();
+                
+                if(e==1){ 
+                    data = data.modelos;
+                }
+
+                if(e==3){
+
+                    document.getElementById('TipoVeiculo').value = data.TipoVeiculo;
+                    document.getElementById('Valor').value = data.Valor;
+                    document.getElementById('Marca').value = data.Marca;
+                    document.getElementById('Modelo').value = data.Modelo;
+                    document.getElementById('AnoModelo').value = data.AnoModelo;
+                    document.getElementById('Combustivel').value = data.Combustivel;
+                    document.getElementById('CodigoFipe').value = data.CodigoFipe;
+                    document.getElementById('MesReferencia').value = data.MesReferencia;
+                    document.getElementById('SiglaCombustivel').value = data.SiglaCombustivel;
+                    document.getElementById('formmarcas').innerHTML = "";
+                    document.getElementById('formmodelos').innerHTML = "";
+                    document.getElementById('formanos').innerHTML = "";
+                    buscar=""
+                } 
+                
+                if(e<3){
+
+                    let radio="";
+
+                    data.forEach((marca,i) => {
+                    
+                        // carrega os quadros
+                        if(e==0){
+                            if(i==0){ 
+                                document.getElementById('formmarcas').innerHTML = "";
+                                radio = '<div><input type="radio" name="Rmarca" value="'+marca.codigo+'" checked onclick="busca(1)"><label>'+marca.nome+'</label></div>';
+                            }else{ 
+                                radio = '<div><input type="radio" name="Rmarca" value="'+marca.codigo+'" onclick="busca(1)"><label>'+marca.nome+'</label></div>';
+                            }
+                            document.getElementById('formmarcas').innerHTML += radio;
+                            
+                        }else if(e==1){
+                            if(i==0){
+                                document.getElementById('formmodelos').innerHTML = ""; 
+                                radio = '<div><input type="radio" name="Rmodelos" value="'+marca.codigo+'" checked onclick="busca(2)"><label>'+marca.nome+'</label></div>';
+                            }else{ 
+                                radio = '<div><input type="radio" name="Rmodelos" value="'+marca.codigo+'" onclick="busca(2)"><label>'+marca.nome+'</label></div>';                       
+                            }
+                            document.getElementById('formmodelos').innerHTML += radio; 
+                        }else if(e==2){
+                            if(i==0){
+                                document.getElementById('formanos').innerHTML = "";   
+                                radio = '<div><input type="radio" name="Rano" value="'+marca.codigo+'" checked onclick="busca(3)"><label>'+marca.nome+'</label></div>';
+                            }else{ 
+                                radio = '<div><input type="radio" name="Rano" value="'+marca.codigo+'" onclick="busca(3)"><label>'+marca.nome+'</label></div>';  
+                            }
+                            document.getElementById('formanos').innerHTML += radio; 
+                        }
+                            
+                    });
+                }
+            }
+        }
+        
 
     </script>
     
