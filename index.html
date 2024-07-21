@@ -20,7 +20,7 @@
     </header>
 
 
-    <div class="tipo">
+    <div class="tipo sectio" id="section1">
         
             <input type="radio" id="carros" name="Rtipo" value="carros" checked onclick="busca(0)"><label>Carros</label>
             <input type="radio" id="motos" name="Rtipo" value="motos" onclick="busca(0)"><label>Motos</label>
@@ -29,18 +29,18 @@
         
     </div>
 
-    <div class="marcas">
+    <div class="marcas section" id="section2">
 
         <p>Marcas</p>
 
-        <div id="formmarcas" >
+        <div id="formmarcas" class="seletores" >
 
         </div>
 
     </div>
 
 
-    <div class="modelo">
+    <div class="modelo section" id="section3">
 
         <p>Modelos</p>
         <div id="formmodelos">
@@ -49,7 +49,7 @@
 
     </div>
 
-    <div class="ano">
+    <div class="ano section" id="section4">
 
         <p>Ano</p>
         <div id="formanos">
@@ -59,7 +59,7 @@
     </div>
 
 
-    <div class="ficha">
+    <div class="ficha section" id="section5">
 
         <p>Ficha do veiculo Veiculo</p>
 
@@ -74,40 +74,56 @@
                 </div>
                 <div >
                     <label for="Marca">Marca</label>
-                    <input type="text" id="Marca" name="Marca" readonly>
+                    <input type="text" id="Marca" name="Marca" readonly required>
                 </div>
                 <div >
                     <label for="Modelo">Modelo</label>
-                    <input type="text" id="Modelo" name="Modelo" readonly>
+                    <input type="text" id="Modelo" name="Modelo" readonly required>
                 </div>
                 <div >
                     <label for="AnoModelo">Ano</label>
-                    <input type="number" id="AnoModelo" name="AnoModelo" readonly>
+                    <input type="number" id="AnoModelo" name="AnoModelo" readonly required>
                 </div>
                 <div>
                     <label for="Combustivel">Combustivel</label>
-                    <input type="text" id="Combustivel" name="Combustivel" readonly>
+                    <input type="text" id="Combustivel" name="Combustivel" readonly required>
                 </div>
                 <div>
                     <label for="CodigoFipe">Código Fipe</label>
-                    <input type="text" id="CodigoFipe" name="CodigoFipe" readonly>
+                    <input type="text" id="CodigoFipe" name="CodigoFipe" readonly required>
                 </div>
                 <div >
                     <label for="MesReferencia">Mês de referencia</label>
-                    <input type="text" id="MesReferencia" name="MesReferencia" readonly>
+                    <input type="text" id="MesReferencia" name="MesReferencia" readonly required>
                 </div>
                 <div >
                     <label for="SiglaCombustivel">Sigla do Combustivel</label>
-                    <input type="text" id="SiglaCombustivel" name="SiglaCombustivel" readonly>
+                    <input type="text" id="SiglaCombustivel" name="SiglaCombustivel" readonly required>
                 </div>
                 
             </form>
 
     </div>
 
+    <div class="footer section" onclick="window.scrollTo({ top: 0, behavior: 'smooth' })"">
+        <button>Voltar ao topo</button>
+
+    </div>
+
 
 
     <script>
+
+        function nextsection(e){
+
+            const currentSection = e.closest('.section');
+            const nextSection = currentSection.nextElementSibling;
+            if (nextSection) {
+                nextSection.scrollIntoView({ behavior: 'smooth' });
+            }
+
+
+        }
 
 
 
@@ -169,7 +185,6 @@
                     document.getElementById('CodigoFipe').value = data.CodigoFipe;
                     document.getElementById('MesReferencia').value = data.MesReferencia;
                     document.getElementById('SiglaCombustivel').value = data.SiglaCombustivel;
-                    document.getElementById('formmarcas').innerHTML = "";
                     document.getElementById('formmodelos').innerHTML = "";
                     document.getElementById('formanos').innerHTML = "";
                     buscar=""
@@ -185,26 +200,26 @@
                         if(e==0){
                             if(i==0){ 
                                 document.getElementById('formmarcas').innerHTML = "";
-                                radio = '<div><input type="radio" name="Rmarca" value="'+marca.codigo+'" checked onclick="busca(1)"><label>'+marca.nome+'</label></div>';
+                                radio = '<div><input type="radio" id="marcas'+i+'" name="Rmarca" value="'+marca.codigo+'" checked onclick="busca(1)" onchange="nextsection(this)""><label for="marcas'+i+'">'+marca.nome+'</label></div>';
                             }else{ 
-                                radio = '<div><input type="radio" name="Rmarca" value="'+marca.codigo+'" onclick="busca(1)"><label>'+marca.nome+'</label></div>';
+                                radio = '<div><input type="radio" id="marcas'+i+'" name="Rmarca" value="'+marca.codigo+'" onclick="busca(1)" onchange="nextsection(this)""><label for="marcas'+i+'">'+marca.nome+'</label></div>';
                             }
                             document.getElementById('formmarcas').innerHTML += radio;
                             
                         }else if(e==1){
                             if(i==0){
                                 document.getElementById('formmodelos').innerHTML = ""; 
-                                radio = '<div><input type="radio" name="Rmodelos" value="'+marca.codigo+'" checked onclick="busca(2)"><label>'+marca.nome+'</label></div>';
+                                radio = '<div><input type="radio" id="modelos'+i+'" name="Rmodelos" value="'+marca.codigo+'" checked onclick="busca(2)" onchange="nextsection(this)""><label for="modelos'+i+'">'+marca.nome+'</label></div>';
                             }else{ 
-                                radio = '<div><input type="radio" name="Rmodelos" value="'+marca.codigo+'" onclick="busca(2)"><label>'+marca.nome+'</label></div>';                       
+                                radio = '<div><input type="radio" id="modelos'+i+'" name="Rmodelos" value="'+marca.codigo+'" onclick="busca(2)" onchange="nextsection(this)""><label for="modelos'+i+'">'+marca.nome+'</label></div>';                       
                             }
                             document.getElementById('formmodelos').innerHTML += radio; 
                         }else if(e==2){
                             if(i==0){
                                 document.getElementById('formanos').innerHTML = "";   
-                                radio = '<div><input type="radio" name="Rano" value="'+marca.codigo+'" checked onclick="busca(3)"><label>'+marca.nome+'</label></div>';
+                                radio = '<div><input type="radio" id="anos'+i+'" name="Rano" value="'+marca.codigo+'" checked onclick="busca(3)" onchange="nextsection(this)""><label for="anos'+i+'"'>+marca.nome+'</label></div>';
                             }else{ 
-                                radio = '<div><input type="radio" name="Rano" value="'+marca.codigo+'" onclick="busca(3)"><label>'+marca.nome+'</label></div>';  
+                                radio = '<div><input type="radio" id="anos'+i+'" name="Rano" value="'+marca.codigo+'" onclick="busca(3)" onchange="nextsection(this)""><label for="anos'+i+'">'+marca.nome+'</label></div>';  
                             }
                             document.getElementById('formanos').innerHTML += radio; 
                         }
